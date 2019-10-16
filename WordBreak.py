@@ -3,7 +3,8 @@ class SolutionBFS:
     Time exceed on lintcode
     Passed on Leetcode
     """
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+
+    def wordBreak(self, s, wordDict) -> bool:
         q = [s]
         already_seen = set()
 
@@ -18,6 +19,7 @@ class SolutionBFS:
                     if curr_s.startswith(w):
                         q.append(curr_s[len(w):])
         return False
+
 
 class Solution2:
     """
@@ -48,5 +50,5 @@ class Solution2:
 
 
 if __name__ == '__main__':
-    S = Solution().wordBreak("lintcode", ["lint", "code"])
+    S = Solution2().wordBreak("lintcode", ["lint", "code"])
     print(S)
