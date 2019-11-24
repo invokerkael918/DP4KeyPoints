@@ -13,7 +13,47 @@ directionBFS = [
     (2, 1),
     (-2, 1)
 ]
+DIRECTIONS = [
+    (-1, -2),
+    (1, -2),
+    (-2, -1),
+    (2, -1),
+]
 
+
+class SolutionRollingArray:
+    # 滚动数组优化版
+    # @param {boolean[][]} grid a chessboard included 0 and 1
+    # @return {int} the shortest path
+    def shortestPath2(self, grid):
+        if not grid or not grid[0]:
+            return -1
+
+        n, m = len(grid), len(grid[0])
+
+        # state: f[i][j] 代表从 0,0 跳到 i,j 的最少步数
+        f = [[sys.maxsize] * 3 for _ in range(n)]
+
+        # initialize: f[0][0] 是起点
+        f[0][0] = 0
+
+        # function
+        for j in range(m):
+            if j > 0:
+                for i in range(n):
+                    f[i][j % 3] = sys.maxsize
+            for i in range(n):
+                if grid[i][j]:
+                    continue
+                for delta_x, delta_y in DIRECTIONS:
+                    x, y = i + delta_x, j + delta_y
+                    if 0 <= x < n and 0 <= y < m:
+                        f[i][j % 3] = min(f[i][j % 3], f[x][y % 3] + 1)
+
+        if f[n - 1][(m - 1) % 3] == sys.maxsize:
+            return -1
+
+        return f[n - 1][(m - 1) % 3]
 
 # 取相反数是因为要看从哪个点来
 
@@ -29,7 +69,7 @@ class Solution:
             return -1
         n, m = len(grid), len(grid[0])
 
-        dp = [[100 for j in range(m)] for _ in range(n)]
+        dp = [[sys.maxsize for j in range(m)] for _ in range(n)]
         dp[0][0] = 0
         for j in range(m):
             for i in range(n):
