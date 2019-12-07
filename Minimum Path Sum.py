@@ -11,25 +11,19 @@ class Solution:
         :type m: int col
         :rtype: int
         """
-        n = len(grid)
-        m = len(grid[0])
-        dp = [[0 for i in range(m)] for _ in range(n)]
+        row = len(grid)
+        col = len(grid[0])
+        dp = [[0 for _ in range(col)] for _ in range(2)]
         dp[0][0] = grid[0][0]
-
-        for j in range(m):
-            for i in range(n):
-                if i != 0 and j == 0:
-                    dp[i][j] = dp[i - 1][j] + grid[i][j]
+        for i in range(row):
+            for j in range(col):
+                if (i == 0 and j == 0):
                     continue
-                if i == 0 and j != 0:
-                    dp[i][j] = dp[i][j - 1] + grid[i][j]
+                if i == 0:
+                    dp[0][j] = dp[0][j - 1] + grid[0][j]
                     continue
-                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
-        return dp[n - 1][m - 1]
-
-
-if __name__ == '__main__':
-    a = [[1, 3], [1, 5]]
-    b = [[1, 3, 1], [1, 5, 1], [4, 2, 1]]
-    S = Solution().minPathSum(b)
-    print(S)
+                if j == 0:
+                    dp[i % 2][j] = dp[(i - 1) % 2][j] + grid[i][j]
+                    continue
+                dp[i % 2][j] = min(dp[(i - 1) % 2][j], dp[i % 2][j - 1]) + grid[i][j]
+        return dp[(row - 1) % 2][col - 1]
