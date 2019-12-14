@@ -38,5 +38,5 @@ class Solution:
         return dp[-1]
 
 if __name__ == '__main__':
-    S = Solution().numDecodings("123")
+    S = Solution().numDecodings("456")
     print(S)
